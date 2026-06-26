@@ -74,3 +74,8 @@ a, a:visited {
     /* 💥 정확히 사진 알맹이 영역에만 마우스 손가락 피드백을 줍니다 */
     cursor: pointer; 
 }
+
+body {
+    margin: 0;
+    padding: 0; /* 혹시 모를 브라우저별 패딩 오차까지 완벽 방어 */
+}

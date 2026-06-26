@@ -43,7 +43,6 @@ function loadPage(pageName) {
         contentArea.innerHTML = `
             <h2>HTML이란 무엇인가?</h2>
             <p>Hypertext Markup Language (HTML) is the standard Markup language for creating web pages...</p>
-            <img src="nyc.jpg" width="100%" style="margin-top:20px;">
         `;
     } else if (pageName === 'ABOUT') {
         // 💥 ABOUT을 눌렀을 때 띄울 텍스트를 이 자리에 꽂아 넣습니다 (2.html의 내용)
