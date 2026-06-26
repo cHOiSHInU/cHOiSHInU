@@ -1,0 +1,76 @@
+/* ==========================================
+   0. 로컬 가변 폰트(Variable Font) 완벽 등록
+   ========================================== */
+@font-face {
+    font-family: 'InterVariable';
+    src: url('Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
+    font-weight: 100 900; 
+    font-style: normal;
+}
+
+/* ==========================================
+   전체 선택자 및 기본 세팅
+   ========================================== */
+* {
+    font-family: 'InterVariable', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700; 
+    color: #1b1b1b;
+    letter-spacing: -0.035em; 
+}
+
+a, a:visited {
+    text-decoration: none; 
+    color: #1b1b1b; 
+}
+
+/* ==========================================
+   상단 바 레이아웃 (yooniverse/AMBUSH 스타일)
+   ========================================== */
+.top-bar {
+    display: flex;            
+    justify-content: space-between; 
+    align-items: center;      
+    padding: 10px 10px;       
+}
+
+.logo h1 {
+    margin: 0;                
+}
+
+.logo h1 a {
+    font-size: 32px;
+    font-weight: 900; 
+}
+
+.menu {
+    display: flex;            
+    list-style: none;         
+    margin-right: 10px;
+    padding: 0;
+}
+
+.menu li {
+    margin-left: 30px;        
+}
+
+.menu li a {
+    font-size: 16px;          
+    font-weight: 700;         
+    letter-spacing: -0.04em; 
+}
+
+/* ==========================================
+   메인 사진 세팅 (순수 이미지 마우스 포인터)
+   ========================================== */
+#random-img {
+    display: block;      
+    margin: 40px auto;   /* 위아래 40px 여백, 좌우는 정중앙 정렬 */
+    
+    max-width: 90%;      
+    height: 70vh;        
+    object-fit: contain; 
+    
+    /* 💥 정확히 사진 알맹이 영역에만 마우스 손가락 피드백을 줍니다 */
+    cursor: pointer; 
+}
