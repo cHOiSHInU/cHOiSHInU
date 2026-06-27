@@ -45,10 +45,59 @@ function loadPage(pageName) {
             <p>Hypertext Markup Language (HTML) is the standard Markup language for creating web pages...</p>
         `;
     } else if (pageName === 'ABOUT') {
-        // 💥 ABOUT을 눌렀을 때 띄울 텍스트를 이 자리에 꽂아 넣습니다 (2.html의 내용)
         contentArea.innerHTML = `
-            <h2>CSS란 무엇인가?</h2>
-            <p>CSS (Cascading Style Sheets) is a fundamental language of the open web used to define the presentation...</p>
+            <!-- 📐 화면 정중앙 좌표에 꽂히는 베이스캠프 (이 상자의 크기는 사진 크기와 100% 동일해집니다) -->
+            <div class="about-center-wrapper">
+                
+                <!-- 📸 래퍼 안을 꽉 채우는 사진 -->
+                <img id="about-img" src="IMG_0549.JPEG" alt="About Profile">
+                
+                <!-- ✍️ 사진의 오른쪽 끝선(100%)에 자동으로 달라붙는 텍스트 박스 -->
+                <div class="about-text-container">
+                    <div class="about-box">
+                        CHOI SHINU<br>
+                        SEOUL, KOREA<br>
+                        sinw123@gmail.com<br>
+                        <!-- 💥 대학교 (Flex로 표처럼 분리) -->
+                        <div style="display: flex;">
+                            <!-- 왼쪽 연도 칸: '2021-Present'가 들어갈 만큼 넉넉하게 100px 고정 -->
+                            <span style="width: 150px; flex-shrink: 0;">2021 - Present</span>
+                            <!-- 오른쪽 학교 칸 -->
+                            <span>Hanyang University School of Architecture</span>
+                        </div>
+                        
+                        <!-- 💥 고등학교 (졸업 연도 2021 기입) -->
+                        <div style="display: flex;">
+                            <!-- 위쪽 연도 칸과 똑같이 100px 고정 -> 우측 텍스트 세로선 완벽 일치! -->
+                            <span style="width: 150px; flex-shrink: 0;">2018 - 2020</span>
+                            <span>Gyeongnam Science High School</span>
+                        </div>
+                    </div>
+                    <div class="about-box">SKILLS<br>
+                    Rhino<br>
+                    Illustrator<br>
+                    AutoCAD
+                    </div>
+                    <div class="about-box">HONORS & AWARDS<br>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">Finalist</span>
+                            <span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span>
+                        </div>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">Excellence Award</span>
+                            <span>65th National Science Fair</span>
+                        </div>                   
+
+                    </div>
+                    <div class="about-box">PROJECT<br>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">2019</span>
+                            <span>A Study on Soil Liquefaction Induced by Earthquakes</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
         `;
     }
 }

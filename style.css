@@ -8,15 +8,17 @@
     font-style: normal;
 }
 
+
 /* ==========================================
    전체 선택자 및 기본 세팅
    ========================================== */
 * {
     font-family: 'InterVariable', sans-serif;
     font-optical-sizing: auto;
-    font-weight: 700; 
+    font-weight: 900; 
     color: #1b1b1b;
-    letter-spacing: -0.035em; 
+    letter-spacing: -0.03em; 
+    font-size: 16px;
 }
 
 a, a:visited {
@@ -43,6 +45,7 @@ a, a:visited {
     font-weight: 900; 
 }
 
+
 .menu {
     display: flex;            
     list-style: none;         
@@ -56,8 +59,8 @@ a, a:visited {
 
 .menu li a {
     font-size: 16px;          
-    font-weight: 700;         
-    letter-spacing: -0.04em; 
+    font-weight: 900;         
+    letter-spacing: -0.03em; 
 }
 
 /* ==========================================
@@ -78,4 +81,77 @@ a, a:visited {
 body {
     margin: 0;
     padding: 0; /* 혹시 모를 브라우저별 패딩 오차까지 완벽 방어 */
+}
+
+/* 웹사이트 전체의 드래그 색상을 바꿀 때 */
+::selection {
+  background-color: #1b1b1b; /* 드래그 박스의 배경색 (블랙) */
+  color: #ffffff;            /* 드래그 박스 안의 글자색 (화이트) */
+}
+
+
+/* ==========================================
+   ABOUT 페이지 - 끝단 자동 추적 & 조절 컨트롤러 (블록 팽창 픽스)
+   ========================================== */
+
+/* 📐 1. 팽창을 막고 사진 크기에 완벽히 밀착하는 정중앙 래퍼 */
+.about-center-wrapper {
+    position: absolute;
+    top: 40px;                 /* 상단 여백 유지 */
+    left: 50%;
+    transform: translateX(-50%); /* 화면 완벽한 정중앙 고정 */
+    
+    width: fit-content;        /* 💥 핵심 픽스: 상자가 화면 끝까지 늘어나는 걸 막고 사진 가로폭에 꽉 맞게 조여줌 */
+    height: 70vh;              /* 기준 높이 70vh */
+}
+
+/* 📸 2. 높이 70vh로 고정된 이미지 */
+#about-img {
+    display: block;
+    height: 70vh;              /* 💥 부모 상속 대신 이미지 자체에 70vh를 직접 꽂아 넣어 높이 오류 완전 차단 */
+    width: auto;               /* 원본 비율에 맞춰 가로 폭 자동 계산 (찌그러짐 방지) */
+}
+
+/* ✍️ 3. 사진 끝단을 자동으로 찾아서 붙는 텍스트 컨테이너 */
+.about-text-container {
+    position: absolute;
+    top: 0;                    
+    height: 100%;              
+    
+    /* 팽창이 멈춘 사진 상자의 '진짜' 우측 끝단에 달라붙음 */
+    left: 100%;                
+    
+    /* =======================================================
+       🛠️ [디자인 조절 컨트롤러] 여기서 수치를 자유롭게 변경하세요
+       ======================================================= */
+       
+    /* 1️⃣ 이미지와 텍스트 박스 그룹 사이의 가로 여백 (거리) */
+    margin-left: 40px;         
+
+    /* 2️⃣ 4개 텍스트 박스의 가로 길이(폭) */
+    width: 650px;              
+    
+    /* 3️⃣ 각 텍스트 박스(1~4번) 사이의 상하 여백 간격 
+       (간격을 넓혀도 컨테이너 총 높이 70vh는 절대 깨지지 않고 내부에서 분할됨) */
+    gap: 20px;                 
+    
+    /* ======================================================= */
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* 📦 4. 4등분 스태킹 박스 */
+.about-box {
+    flex: 1;                   /* 4개 박스 높이 균등 분할 */
+    text-align: left;          /* 왼쪽 정렬 */
+    
+    /* 일러스트레이터형 줄바꿈 및 컷팅 기능 */
+    white-space: normal;       
+    overflow-wrap: break-word; 
+    overflow: hidden;          
+}
+/* 💥 absolute 요소들이 화면 맨 위(천장)가 아니라 '메뉴바 바로 아래'를 기준으로 위치를 잡도록 기준점 설정 */
+#content-area {
+    position: relative;
 }
