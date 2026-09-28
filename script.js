@@ -190,11 +190,11 @@ function loadPage(pageName) {
                     </div>
                     <div class="about-box">HONORS & AWARDS<br>
                         <div style="display: flex;">
-                            <span style="width: 150px; flex-shrink: 0;">Finalist</span>
+                            <span style="width: 100px; flex-shrink: 0;">Finalist</span>
                             <span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span>
                         </div>
                         <div style="display: flex;">
-                            <span style="width: 150px; flex-shrink: 0;">Excellence</span>
+                            <span style="width: 1px; flex-shrink: 0;">Excellence</span>
                             <span>65th National Science Fair</span>
                         </div>                   
                     </div>
