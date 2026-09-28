@@ -1,4 +1,12 @@
 /* ==========================================
+   -1. 전역 디자인 변수
+   ========================================== */
+:root {
+    --label-col-width: 120px; /* ABOUT 탭 정렬 라벨 칸 너비. 이 값 하나만 바꾸면 모든 줄(개인정보/HONORS/PROJECT)이 같이 움직임. */
+    --img-text-gap: 20px;     /* ABOUT 사진과 텍스트 블록 사이 여백 */
+}
+
+/* ==========================================
    0. 로컬 가변 폰트(Variable Font) 완벽 등록
    ========================================== */
 @font-face {
@@ -137,15 +145,15 @@ body {
        ======================================================= */
        
     /* 1️⃣ 이미지와 텍스트 박스 그룹 사이의 가로 여백 (거리) */
-    margin-left: 40px;         
+    margin-left: var(--img-text-gap);
 
     /* 2️⃣ 4개 텍스트 박스의 가로 길이(폭) */
-    width: 650px;              
-    
-    /* 3️⃣ 각 텍스트 박스(1~4번) 사이의 상하 여백 간격 
+    width: 650px;
+
+    /* 3️⃣ 각 텍스트 박스(1~4번) 사이의 상하 여백 간격
        (간격을 넓혀도 컨테이너 총 높이 70vh는 절대 깨지지 않고 내부에서 분할됨) */
-    gap: 20px;                 
-    
+    gap: 20px;
+
     /* ======================================================= */
 
     display: flex;
@@ -156,11 +164,24 @@ body {
 .about-box {
     flex: 1;                   /* 4개 박스 높이 균등 분할 */
     text-align: left;          /* 왼쪽 정렬 */
-    
+
     /* 일러스트레이터형 줄바꿈 및 컷팅 기능 */
-    white-space: normal;       
-    overflow-wrap: break-word; 
-    overflow: hidden;          
+    white-space: normal;
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+/* 🧭 5. [탭 정렬 시스템] 개인정보/HONORS/PROJECT 등 모든 라벨-값 줄이
+   이 변수 하나만 공유해서 세로선이 절대 어긋나지 않게 함.
+   → 너비를 바꾸고 싶으면 위 :root의 --label-col-width 하나만 수정하면 전체가 같이 움직임. */
+.tab-row {
+    display: flex;
+}
+
+.tab-label {
+    width: var(--label-col-width);
+    flex-shrink: 0;
+    white-space: nowrap; /* 라벨 자체가 줄바꿈되며 옆 텍스트와 겹치는 것 방지 */
 }
 /* 💥 absolute 요소들이 화면 맨 위(천장)가 아니라 '메뉴바 바로 아래'를 기준으로 위치를 잡도록 기준점 설정 */
 #content-area {

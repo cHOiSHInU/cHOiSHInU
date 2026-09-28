@@ -174,12 +174,12 @@ function loadPage(pageName) {
                         CHOI SHINU<br>
                         SEOUL, KOREA<br>
                         sinw123@gmail.com<br>
-                        <div style="display: flex;">
-                            <span style="width: 150px; flex-shrink: 0;">2021 - Present</span>
+                        <div class="tab-row">
+                            <span class="tab-label">2021 - Present</span>
                             <span>Hanyang University School of Architecture</span>
                         </div>
-                        <div style="display: flex;">
-                            <span style="width: 150px; flex-shrink: 0;">2018 - 2020</span>
+                        <div class="tab-row">
+                            <span class="tab-label">2018 - 2020</span>
                             <span>Gyeongnam Science High School</span>
                         </div>
                     </div>
@@ -189,18 +189,18 @@ function loadPage(pageName) {
                     AutoCAD
                     </div>
                     <div class="about-box">HONORS & AWARDS<br>
-                        <div style="display: flex;">
-                            <span style="width: 100px; flex-shrink: 0;">Finalist</span>
+                        <div class="tab-row">
+                            <span class="tab-label">Finalist</span>
                             <span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span>
                         </div>
-                        <div style="display: flex;">
-                            <span style="width: 1px; flex-shrink: 0;">Excellence</span>
+                        <div class="tab-row">
+                            <span class="tab-label">Excellence</span>
                             <span>65th National Science Fair</span>
-                        </div>                   
+                        </div>
                     </div>
                     <div class="about-box">PROJECT<br>
-                        <div style="display: flex;">
-                            <span style="width: 150px; flex-shrink: 0;">2019</span>
+                        <div class="tab-row">
+                            <span class="tab-label">2019</span>
                             <span>A Study on Soil Liquefaction Induced by Earthquakes</span>
                         </div>
                     </div>
