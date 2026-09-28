@@ -95,7 +95,7 @@ function loadPage(pageName) {
         dummyScroll.id = 'dummy-scroll-container';
         document.body.appendChild(dummyScroll);
 
-        // 📏 [완벽한 원점 세팅] 꼼수(150px 여백) 제거. 메인/어바웃과 1픽셀도 안 틀리고 정확히 맞춤
+        // 📏 [완벽한 원점 세팅] 메인/어바웃과 1픽셀도 안 틀리고 정확히 맞춤
         const topOffset = topBar ? topBar.offsetHeight : 0; 
         const paddingTopValue = topOffset + 40; 
         
@@ -162,25 +162,63 @@ function loadPage(pageName) {
 
     } else if (pageName === 'ABOUT') {
         contentArea.innerHTML = `
+            <!-- 📐 화면 정중앙 좌표에 꽂히는 베이스캠프 -->
             <div class="about-center-wrapper">
-                <img id="about-img" src="" alt="About Profile" style="opacity: 0;">
-                <div class="about-text-container" id="about-text" style="opacity: 0;">
-                    <div class="about-box">CHOI SHINU<br>SEOUL, KOREA<br>sinw123@gmail.com</div>
-                    <div class="about-box">SKILLS<br>Rhino<br>Illustrator<br>AutoCAD</div>
-                    <div class="about-box">HONORS & AWARDS<br>...</div>
-                    <div class="about-box">PROJECT<br>...</div>
+                
+                <!-- 📸 래퍼 안을 꽉 채우는 사진 -->
+                <img id="about-img" src="IMG_0549.JPEG" alt="About Profile">
+                
+                <!-- ✍️ 사진의 오른쪽 끝선에 자동으로 달라붙는 텍스트 박스 -->
+                <div class="about-text-container">
+                    <div class="about-box">
+                        CHOI SHINU<br>
+                        SEOUL, KOREA<br>
+                        sinw123@gmail.com<br>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">2021 - Present</span>
+                            <span>Hanyang University School of Architecture</span>
+                        </div>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">2018 - 2020</span>
+                            <span>Gyeongnam Science High School</span>
+                        </div>
+                    </div>
+                    <div class="about-box">SKILLS<br>
+                    Rhino<br>
+                    Illustrator<br>
+                    AutoCAD
+                    </div>
+                    <div class="about-box">HONORS & AWARDS<br>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">Finalist</span>
+                            <span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span>
+                        </div>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">Excellence</span>
+                            <span>65th National Science Fair</span>
+                        </div>                   
+                    </div>
+                    <div class="about-box">PROJECT<br>
+                        <div style="display: flex;">
+                            <span style="width: 150px; flex-shrink: 0;">2019</span>
+                            <span>A Study on Soil Liquefaction Induced by Earthquakes</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
+
+        // 👻 [테크닉 추가] ABOUT 이미지가 로드되면 투명도를 1로 변경하여 부드럽게 등장시킴
         const aboutImg = document.getElementById("about-img");
-        const aboutText = document.getElementById("about-text");
-        const tempImg = new Image();
-        tempImg.src = "IMG_0549.JPEG";
-        tempImg.onload = function() {
-            aboutImg.src = "IMG_0549.JPEG";
-            aboutImg.style.opacity = 1;
-            aboutText.style.opacity = 1;
-        };
+        if (aboutImg) {
+            if (aboutImg.complete) {
+                aboutImg.style.opacity = 1;
+            } else {
+                aboutImg.onload = function() {
+                    aboutImg.style.opacity = 1;
+                };
+            }
+        }
     }
 }
 
@@ -193,10 +231,10 @@ window.addEventListener('wheel', (e) => {
     isWheeling = true;
     clearTimeout(wheelTimeout);
     
-    // 휠 굴림이 멈췄다고 판단하는 시간 (0.05초). 멈추자마자 바로 튕겨나감!
+    // 휠 굴림이 멈췄다고 판단하는 시간 (0.05초)
     wheelTimeout = setTimeout(() => { isWheeling = false; }, 50);
 
-    // 맨 위에서 위로 뚫으려 할 때 (Friction: 0.4로 뻑뻑하게 늘어남)
+    // 맨 위에서 위로 뚫으려 할 때 (Friction: 0.4)
     if (window.scrollY <= 0 && e.deltaY < 0) {
         overscrollY += e.deltaY * 0.4; 
     } 
@@ -217,7 +255,7 @@ window.addEventListener('touchstart', (e) => {
 window.addEventListener('touchmove', (e) => {
     if (!isWorkPage) return;
     const currentY = e.touches[0].clientY;
-    const deltaY = lastTouchY - currentY; // 손가락 올리면 양수(스크롤 내림)
+    const deltaY = lastTouchY - currentY;
     lastTouchY = currentY;
 
     if (window.scrollY <= 0 && deltaY < 0) {
@@ -229,7 +267,6 @@ window.addEventListener('touchmove', (e) => {
 
 window.addEventListener('touchend', () => {
     if (!isWorkPage) return;
-    // 손가락 떼는 즉시 딜레이 없이 튕겨냄!
     isWheeling = false; 
 });
 
@@ -239,16 +276,12 @@ window.addEventListener('touchend', () => {
 function runiOSPhysicsEngine() {
     if (!isWorkPage) return;
 
-    // 손을 떼거나 휠을 멈췄는데 고무줄이 늘어나 있다면? 
     if (!isWheeling && Math.abs(overscrollY) > 0.5) {
-        // 즉각적이고 강렬한 탄성으로 원점(0) 복귀 (숫자가 클수록 팍! 튕김)
         overscrollY += (0 - overscrollY) * 0.15; 
     } else if (!isWheeling && Math.abs(overscrollY) <= 0.5) {
-        // 거의 다 돌아오면 깔끔하게 0으로 리셋
         overscrollY = 0;
     }
 
-    // Lenis의 부드러운 스크롤 값 + iOS 고무줄 텐션 값의 완벽한 융합
     const finalY = currentLenisY + overscrollY;
 
     const scrollClones = document.querySelectorAll('.scroll-content-clone');
