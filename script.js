@@ -208,17 +208,8 @@ function loadPage(pageName) {
             </div>
         `;
 
-        // 👻 [테크닉 추가] ABOUT 이미지가 로드되면 투명도를 1로 변경하여 부드럽게 등장시킴
-        const aboutImg = document.getElementById("about-img");
-        if (aboutImg) {
-            if (aboutImg.complete) {
-                aboutImg.style.opacity = 1;
-            } else {
-                aboutImg.onload = function() {
-                    aboutImg.style.opacity = 1;
-                };
-            }
-        }
+        // 레이아웃 고정은 CSS의 #about-img { aspect-ratio } 가 담당함.
+        // (예전 페이드인 코드는 opacity 초기값 0이 어디에도 없어서 동작하지 않았고, 불필요해서 제거)
     }
 }
 
