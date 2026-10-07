@@ -17,6 +17,7 @@ const workProjects = [
     { title: "apple", year: "apple", image: "thumbs/IMG_1228.webp" },
     { title: "apple", year: "apple", image: "thumbs/test.webp" },
     { title: "apple", year: "apple", image: "thumbs/last.webp" },
+    { title: "A Study on Soil Liquefaction Induced by Earthquakes", year: "2019", image: "thumbs/liquefaction.webp" },
 ];
 
 // 📌 [메뉴바 고정]
@@ -286,12 +287,6 @@ function loadPage(pageName) {
                         <div class="tab-row">
                             <span class="tab-label">Excellence</span>
                             <span>65th National Science Fair</span>
-                        </div>
-                    </div>
-                    <div class="about-box">PROJECT<br>
-                        <div class="tab-row">
-                            <span class="tab-label">2019</span>
-                            <span>A Study on Soil Liquefaction Induced by Earthquakes</span>
                         </div>
                     </div>
                 </div>
