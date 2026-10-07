@@ -2,7 +2,7 @@
    -1. 전역 디자인 변수
    ========================================== */
 :root {
-    --label-col-width: 120px; /* ABOUT 탭 정렬 라벨 칸 너비. 이 값 하나만 바꾸면 모든 줄(개인정보/HONORS/PROJECT)이 같이 움직임. */
+    --label-col-width: 140px; /* ABOUT 탭 정렬 라벨 칸 너비. 이 값 하나만 바꾸면 모든 줄(개인정보/HONORS/PROJECT)이 같이 움직임. */
     --img-text-gap: 20px;     /* ABOUT 사진과 텍스트 블록 사이 여백 */
     --ease-inout: cubic-bezier(0.455, 0.03, 0.515, 0.955); /* WORK 페이지 전환 공통 easing (GSAP power1.inOut 근사) */
     --about-img-ratio: 3 / 4; /* ABOUT 사진 "슬롯" 비율(가로/세로). 파일 해상도와 무관한 디자인 값. 어떤 사진이 와도 이 틀을 채움 */

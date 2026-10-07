@@ -280,6 +280,10 @@ function loadPage(pageName) {
                             <span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span>
                         </div>
                         <div class="tab-row">
+                            <span class="tab-label">Bronze</span>
+                            <span>17th Korea Science &amp; Engineering Fair (KSEF)</span>
+                        </div>
+                        <div class="tab-row">
                             <span class="tab-label">Excellence</span>
                             <span>65th National Science Fair</span>
                         </div>
