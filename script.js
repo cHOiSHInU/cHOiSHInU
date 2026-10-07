@@ -70,19 +70,35 @@ function rgbToHue(r, g, b) {
 
 function extractPastelColor(img) {
     try {
-        const size = 16;
+        const size = 32;
         const canvas = document.createElement('canvas');
         canvas.width = canvas.height = size;
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         ctx.drawImage(img, 0, 0, size, size);
         const px = ctx.getImageData(0, 0, size, size).data;
-        let r = 0, g = 0, b = 0, w = 0;
+
+        // 색상환을 10°씩 36칸으로 나눠 "어느 색이 제일 많은지" 투표시킨다.
+        // (예전처럼 RGB를 평균내면 파랑+빨강 같은 반대색이 서로 상쇄돼 회색이 나와버린다)
+        const BUCKETS = 36;
+        const votes = new Array(BUCKETS).fill(0);
         for (let i = 0; i < px.length; i += 4) {
-            const spread = Math.max(px[i], px[i + 1], px[i + 2]) - Math.min(px[i], px[i + 1], px[i + 2]);
-            const weight = spread / 255 + 0.05; // 채도 높은 픽셀일수록 색상에 크게 반영
-            r += px[i] * weight; g += px[i + 1] * weight; b += px[i + 2] * weight; w += weight;
+            const r = px[i], g = px[i + 1], b = px[i + 2];
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            if (max < 30 || min > 235) continue;        // 거의 검정/흰색은 색을 못 정하므로 제외
+            const sat = (max - min) / max;
+            if (sat < 0.18) continue;                    // 무채색에 가까운 픽셀도 제외
+            votes[Math.floor(rgbToHue(r, g, b) / (360 / BUCKETS)) % BUCKETS] += sat * sat;
         }
-        return `hsl(${Math.round(rgbToHue(r / w, g / w, b / w))}, 55%, 80%)`;
+
+        // 이웃 칸까지 합산해서 뽑는다 → 경계에 걸쳐 흩어진 같은 색이 쪼개지지 않음
+        let best = -1, bestScore = 0;
+        for (let i = 0; i < BUCKETS; i++) {
+            const score = votes[(i + BUCKETS - 1) % BUCKETS] + votes[i] + votes[(i + 1) % BUCKETS];
+            if (score > bestScore) { bestScore = score; best = i; }
+        }
+        if (best < 0) return '#e8e8e8';                  // 색이라 할 만한 픽셀이 없는 흑백 이미지
+
+        return `hsl(${Math.round((best + 0.5) * (360 / BUCKETS))}, 55%, 80%)`;
     } catch (e) {
         return '#e8e8e8'; // 캔버스를 읽을 수 없는 환경(file:// 등)이면 무채색으로 대체
     }
