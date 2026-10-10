@@ -1,5 +1,5 @@
 // 대문자 원본 확장자 고정
-const imageList = ["IMG_0971.JPEG", "IMG_1508.JPEG", "IMG_1228.JPEG", "IMG_1787.JPEG"];
+const imageList = ["IMG_0971.JPEG", "IMG_1508.JPEG", "IMG_1228.JPEG", "IMG_1787.JPEG", "IMG_0549.JPEG"];
 let isFirstLoad = true;
 
 // =========================================================
@@ -7,16 +7,17 @@ let isFirstLoad = true;
 //   title / year : 목록에 보이는 텍스트
 //   image        : 호버 시 커서를 따라다니는 썸네일. 원본 대신 `python tools/make_thumbs.py 사진.jpg` 로 만든
 //                  thumbs/사진.webp (가로 800px, 수십 KB)를 쓸 것 → 로딩이 빨라 호버가 끊기지 않음
+//   full         : (선택) 클릭 시 씬2에 크게 뜨는 원본 이미지. 생략하면 image(썸네일)로 대체
 //   color        : (선택) 호버 시 바뀌는 배경색. 생략하면 image에서 자동 추출
-//   href         : (선택) 클릭 시 이동할 주소(새 탭). 생략하면 클릭해도 아무 일도 안 일어남
+//   href         : (선택) 클릭 시 이동할 주소(새 탭). 생략하면 클릭 시 씬2(원본 이미지)로 전환
 // =========================================================
 const workProjects = [
-    { title: "apple", year: "apple", image: "thumbs/IMG_1508.webp" },
-    { title: "apple", year: "apple", image: "thumbs/IMG_1787.webp" },
-    { title: "apple", year: "apple", image: "thumbs/IMG_0971.webp" },
-    { title: "apple", year: "apple", image: "thumbs/IMG_1228.webp" },
-    { title: "apple", year: "apple", image: "thumbs/test.webp" },
-    { title: "apple", year: "apple", image: "thumbs/last.webp" },
+    { title: "Shaping Shade: A Community Center in Rural Casamance", year: "2026", image: "thumbs/last.webp", full: "last.jpg" },
+    { title: "Bloom from the Abyss", year: "2025", image: "thumbs/test.webp", full: "test.jpg" },
+    { title: "apple", year: "apple", image: "thumbs/IMG_0971.webp", full: "IMG_0971.JPEG" },
+    { title: "apple", year: "apple", image: "thumbs/IMG_1228.webp", full: "IMG_1228.JPEG" },
+    { title: "apple", year: "apple", image: "thumbs/IMG_1787.webp", full: "IMG_1787.JPEG" },
+    { title: "apple", year: "apple", image: "thumbs/IMG_1508.webp", full: "IMG_1508.JPEG" },
     { title: "A Study on Soil Liquefaction Induced by Earthquakes", year: "2019", image: "thumbs/liquefaction.webp" },
 ];
 
@@ -190,8 +191,37 @@ function renderWorkList(contentArea) {
         }
     };
 
+    // 씬1 → 씬2: 목록이 부드럽게 사라지고, 배경색은 그대로 둔 채 원본 이미지가 홈 사진과 같은 자리에 나타남
+    const isOut = () => section.classList.contains('is-out');
+    const openProject = (i) => {
+        if (isOut()) return;
+        if (workMoveHandler) {
+            document.removeEventListener('mousemove', workMoveHandler);
+            workMoveHandler = null;
+        }
+        items.forEach(li => {
+            li.classList.remove('is-hover');
+            li.style.transitionDelay = '0s'; // 진입 때의 순차 딜레이 없이 한 번에 사라지게
+        });
+        setBg(colors[i], false);
+        section.classList.add('is-out');
+
+        const p = workProjects[i];
+        const img = new Image();
+        img.id = 'work-full';
+        img.alt = p.title;
+        img.src = p.full || p.image;
+        contentArea.appendChild(img);
+
+        // 목록이 다 사라지고(0.9초) 이미지 디코딩까지 끝난 뒤에 페이드인 → 반쯤 그려진 이미지가 보이지 않음
+        const listGone = new Promise(resolve => setTimeout(resolve, 900));
+        Promise.all([img.decode().catch(() => {}), listGone]).then(() => img.classList.add('is-in'));
+    };
+
     items.forEach((li, i) => {
         const thumb = li.querySelector('.work-thumb');
+        const p = workProjects[i];
+        let preloaded = false;
 
         // 첫 항목 색은 진입 시 배경에 바로 적용
         if (colors[i] && i === 0) setBg(colors[0], false);
@@ -211,6 +241,9 @@ function renderWorkList(contentArea) {
         };
 
         li.addEventListener('mouseenter', (e) => {
+            if (isOut()) return;
+            // 호버하는 순간 원본을 미리 받아둠 → 클릭했을 때 대부분 이미 준비된 상태
+            if (!preloaded && p.full) { new Image().src = p.full; preloaded = true; }
             li.classList.add('is-hover');
             move(e);
             workMoveHandler = move;
@@ -223,6 +256,7 @@ function renderWorkList(contentArea) {
             if (workMoveHandler === move) workMoveHandler = null;
         });
         li.addEventListener('touchstart', () => setBg(colors[i]), { passive: true }); // 모바일: 썸네일 없이 배경색만
+        if (!p.href) li.querySelector('.work-link').addEventListener('click', () => openProject(i));
     });
 
     // 진입 연출: 다음 프레임에 클래스를 붙여서 항목들이 0.1초 간격으로 차례로 페이드인
@@ -268,8 +302,10 @@ function loadPage(pageName) {
             <!-- 📐 화면 정중앙 좌표에 꽂히는 베이스캠프 -->
             <div class="about-center-wrapper">
                 
-                <!-- 📸 래퍼 안을 꽉 채우는 사진 -->
-                <img id="about-img" src="IMG_0549.JPEG" alt="About Profile">
+                <!-- ⬛ 사진이 있던 자리(3:4 슬롯)를 그대로 채우는 검정 테두리 사각형 (path) -->
+                <svg id="about-img" viewBox="0 0 3 4" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0 0H3V4H0Z" />
+                </svg>
                 
                 <!-- ✍️ 사진의 오른쪽 끝선에 자동으로 달라붙는 텍스트 박스 -->
                 <div class="about-text-container">
@@ -282,8 +318,19 @@ function loadPage(pageName) {
                             <span>Hanyang University School of Architecture</span>
                         </div>
                         <div class="tab-row">
+                            <span class="tab-label">2023 - 2024</span>
+                            <span>Republic of Korea Air Force, Mandatory Military Service</span>
+                        </div>
+                        <div class="tab-row">
                             <span class="tab-label">2018 - 2020</span>
                             <span>Gyeongnam Science High School</span>
+                        </div>
+                    </div>
+                    <div class="about-box">EXPERIENCE<br>
+                        <div class="tab-row">
+                            <span class="tab-label">2026</span>
+                            <span>Changsin-dong Emergency Housing, Design-Build Team "Builders"<br>
+                            Design &amp; construction, with Hyundai Department Store Group and Jongno-gu Office</span>
                         </div>
                     </div>
                     <div class="about-box">SKILLS<br>
@@ -292,6 +339,10 @@ function loadPage(pageName) {
                     AutoCAD
                     </div>
                     <div class="about-box">HONORS & AWARDS<br>
+                        <div class="tab-row">
+                            <span class="tab-label">Commendation</span>
+                            <span>2026 Mayor of Jongno-gu, Changsin-dong Emergency Housing</span>
+                        </div>
                         <div class="tab-row">
                             <span class="tab-label">Finalist</span>
                             <span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span>

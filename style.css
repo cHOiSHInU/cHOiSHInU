@@ -139,6 +139,15 @@ body {
        → 사진을 어떤 해상도/비율로 바꿔도 레이아웃은 그대로 (비율이 다르면 가장자리가 잘림). */
     aspect-ratio: var(--about-img-ratio);
     object-fit: cover;
+    overflow: visible;         /* 테두리 선이 슬롯 가장자리 바깥쪽 절반까지 잘리지 않게 */
+}
+
+/* ⬛ 슬롯 가장자리를 따라가는 검정 사각형. 선이 늘어나지 않고 항상 1px 유지 */
+#about-img path {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
 }
 
 /* ✍️ 3. 사진 끝단을 자동으로 찾아서 붙는 텍스트 컨테이너 */
@@ -278,6 +287,24 @@ body {
 }
 .work-item.is-hover .work-thumb img,
 .work-item.is-hover .work-thumb canvas { transform: scale(1); }
+
+/* 씬1 → 씬2: 목록 페이드아웃 (배경색은 #work-section에 그대로 남음) */
+#work-section.is-out .work-item { opacity: 0; transition-duration: 0.9s; }
+#work-section.is-out #work-list { pointer-events: none; }
+
+/* 씬2 원본 이미지: 홈의 #random-img와 같은 자리·크기 (위 40px, 높이 70vh, 가로 중앙) */
+#work-full {
+    position: relative;          /* fixed 배경(#work-section, z-index 0) 위로 */
+    z-index: 1;
+    display: block;
+    margin: 40px auto;
+    max-width: 90%;
+    height: 70vh;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.9s var(--ease-inout);
+}
+#work-full.is-in { opacity: 1; }
 
 @media (max-width: 768px) {
     .work-thumb { display: none; }   /* 모바일: 썸네일 없이 배경색 전환만 */
