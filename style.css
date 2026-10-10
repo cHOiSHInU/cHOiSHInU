@@ -2,8 +2,9 @@
    -1. 전역 디자인 변수
    ========================================== */
 :root {
-    --label-col-width: 140px; /* ABOUT 탭 정렬 라벨 칸 너비. 이 값 하나만 바꾸면 모든 줄(개인정보/HONORS/PROJECT)이 같이 움직임. */
-    --img-text-gap: 20px;     /* ABOUT 사진과 텍스트 블록 사이 여백 */
+    --label-col-width: 140px; /* ABOUT 탭 간격: 라벨(연도/상 등급) 칸 너비. 왼쪽·오른쪽 단의 모든 라벨-내용 줄이 이 값 하나를 같이 씀 */
+    --page-left: 20px;        /* 사이트 전체 왼쪽 여백 (로고 시작점, ABOUT 왼쪽 단 시작점) */
+    --page-right: 20px;       /* 사이트 전체 오른쪽 여백 (메뉴 ABOUT 글자 끝, ABOUT 오른쪽 단 끝) */
     --ease-inout: cubic-bezier(0.455, 0.03, 0.515, 0.955); /* WORK 페이지 전환 공통 easing (GSAP power1.inOut 근사) */
     --about-img-ratio: 3 / 4; /* ABOUT 사진 "슬롯" 비율(가로/세로). 파일 해상도와 무관한 디자인 값. 어떤 사진이 와도 이 틀을 채움 */
 }
@@ -54,7 +55,7 @@ a, a:visited {
     display: flex;            
     justify-content: space-between; 
     align-items: center;      
-    padding: 5px 20px;       
+    padding: 5px var(--page-right) 5px var(--page-left);
 }
 
 .logo h1 {
@@ -70,7 +71,7 @@ a, a:visited {
 .menu {
     display: flex;            
     list-style: none;         
-    margin-right: 10px;
+    margin-right: 0;          /* 오른쪽 여백은 .top-bar의 --page-right 하나로만 */
     padding: 0;
 }
 
@@ -133,8 +134,7 @@ body {
     width: auto;               /* 원본 비율에 맞춰 가로 폭 자동 계산 (찌그러짐 방지) */
 
     /* 📍 [레이아웃 점프 방지] 사진 "슬롯"의 크기를 파일과 무관하게 미리 확정함.
-       이게 없으면 로드 전 사진 폭이 0 → .about-text-container(left:100%)가
-       화면 정중앙에 있다가 로드 후 오른쪽으로 튀어나감.
+       이게 없으면 로드 전 사진 폭이 0 → 사진 크기가 로드 후에 튐.
        슬롯 비율은 :root의 --about-img-ratio(디자인 값)이고, 사진은 object-fit으로 슬롯을 채움.
        → 사진을 어떤 해상도/비율로 바꿔도 레이아웃은 그대로 (비율이 다르면 가장자리가 잘림). */
     aspect-ratio: var(--about-img-ratio);
@@ -150,49 +150,28 @@ body {
     vector-effect: non-scaling-stroke;
 }
 
-/* ✍️ 3. 사진 끝단을 자동으로 찾아서 붙는 텍스트 컨테이너 */
-.about-text-container {
-    position: absolute;
-    top: 0;                    
-    height: 100%;              
-    
-    /* 팽창이 멈춘 사진 상자의 '진짜' 우측 끝단에 달라붙음 */
-    left: 100%;                
-    
-    /* =======================================================
-       🛠️ [디자인 조절 컨트롤러] 여기서 수치를 자유롭게 변경하세요
-       ======================================================= */
-       
-    /* 1️⃣ 이미지와 텍스트 박스 그룹 사이의 가로 여백 (거리) */
-    margin-left: var(--img-text-gap);
+/* ✍️ 3. 사진 아래 좌우 두 단 (편집디자인식)
+   - 좌우 끝선 = 메뉴와 같은 --page-left / --page-right (로고 시작 / ABOUT 글자 끝)
+   - 두 단 사이 간격 = 왼쪽 여백과 같은 값
+   - 세로 위치: 사진 아래 끝(위 40px + 높이 70vh)에서 왼쪽 여백과 같은 20px 아래
+   - 사진 래퍼가 absolute라서 이 블록이 페이지 높이를 만들고, 그만큼 스크롤 가능 (스크롤바는 숨김) */
+.about-columns {
+    padding-top: calc(40px + 70vh + var(--page-left));
+    padding-left: var(--page-left);
+    padding-right: var(--page-right);
+    padding-bottom: 40px;
 
-    /* 2️⃣ 4개 텍스트 박스의 가로 길이(폭) */
-    width: 650px;
-
-    /* 3️⃣ 각 텍스트 박스(1~4번) 사이의 상하 여백 간격
-       (간격을 넓혀도 컨테이너 총 높이 70vh는 절대 깨지지 않고 내부에서 분할됨) */
-    gap: 20px;
-
-    /* ======================================================= */
-
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--page-left);
 }
 
-/* 📦 4. 4등분 스태킹 박스 */
-.about-box {
-    flex: 1;                   /* 4개 박스 높이 균등 분할 */
-    text-align: left;          /* 왼쪽 정렬 */
-
-    /* 일러스트레이터형 줄바꿈 및 컷팅 기능 */
-    white-space: normal;
+.about-col {
+    text-align: left;
     overflow-wrap: break-word;
-    overflow: hidden;
 }
 
-/* 🧭 5. [탭 정렬 시스템] 개인정보/HONORS/PROJECT 등 모든 라벨-값 줄이
-   이 변수 하나만 공유해서 세로선이 절대 어긋나지 않게 함.
-   → 너비를 바꾸고 싶으면 위 :root의 --label-col-width 하나만 수정하면 전체가 같이 움직임. */
+/* 🧭 탭 정렬: 라벨 칸 너비를 :root의 --label-col-width 하나로 공유 → 두 단의 내용 시작선이 같은 간격 */
 .tab-row {
     display: flex;
 }
@@ -200,7 +179,7 @@ body {
 .tab-label {
     width: var(--label-col-width);
     flex-shrink: 0;
-    white-space: nowrap; /* 라벨 자체가 줄바꿈되며 옆 텍스트와 겹치는 것 방지 */
+    white-space: nowrap; /* 라벨이 줄바꿈되며 옆 내용과 겹치는 것 방지 */
 }
 /* 💥 absolute 요소들이 화면 맨 위(천장)가 아니라 '메뉴바 바로 아래'를 기준으로 위치를 잡도록 기준점 설정 */
 #content-area {

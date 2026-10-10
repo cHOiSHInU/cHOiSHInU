@@ -55,6 +55,7 @@ function clearPageEffects() {
         workMoveHandler = null;
     }
     window.scrollTo(0, 0);
+    lenis.scrollTo(0, { immediate: true }); // Lenis가 기억하는 스크롤 위치도 맨 위로 (ABOUT에서 내려간 채 이동해도 다음 페이지는 맨 위)
 }
 
 // =========================================================
@@ -299,69 +300,37 @@ function loadPage(pageName) {
 
     } else if (pageName === 'ABOUT') {
         contentArea.innerHTML = `
-            <!-- 📐 화면 정중앙 좌표에 꽂히는 베이스캠프 -->
+            <!-- 📐 화면 정중앙 좌표에 꽂히는 베이스캠프 (위치는 예전과 동일) -->
             <div class="about-center-wrapper">
-                
-                <!-- ⬛ 사진이 있던 자리(3:4 슬롯)를 그대로 채우는 검정 테두리 사각형 (path) -->
+                <!-- ⬛ 3:4 슬롯을 그대로 채우는 검정 테두리 사각형 (path) -->
                 <svg id="about-img" viewBox="0 0 3 4" preserveAspectRatio="none" aria-hidden="true">
                     <path d="M0 0H3V4H0Z" />
                 </svg>
-                
-                <!-- ✍️ 사진의 오른쪽 끝선에 자동으로 달라붙는 텍스트 박스 -->
-                <div class="about-text-container">
-                    <div class="about-box">
-                        CHOI SHINU<br>
-                        SEOUL, KOREA<br>
-                        sinw123@gmail.com<br>
-                        <div class="tab-row">
-                            <span class="tab-label">2021 - Present</span>
-                            <span>Hanyang University School of Architecture</span>
-                        </div>
-                        <div class="tab-row">
-                            <span class="tab-label">2023 - 2024</span>
-                            <span>Republic of Korea Air Force, Mandatory Military Service</span>
-                        </div>
-                        <div class="tab-row">
-                            <span class="tab-label">2018 - 2020</span>
-                            <span>Gyeongnam Science High School</span>
-                        </div>
-                    </div>
-                    <div class="about-box">EXPERIENCE<br>
-                        <div class="tab-row">
-                            <span class="tab-label">2026</span>
-                            <span>Changsin-dong Emergency Housing, Design-Build Team "Builders"<br>
-                            Design &amp; construction, with Hyundai Department Store Group and Jongno-gu Office</span>
-                        </div>
-                    </div>
-                    <div class="about-box">SKILLS<br>
+            </div>
+
+            <!-- ✍️ 사진 아래 좌우 두 단. 사진과 20px 간격, 스크롤로 읽음 -->
+            <div class="about-columns">
+                <div class="about-col">
+                    CHOI SHINU<br>
+                    SEOUL, KOREA<br>
+                    sinw123@gmail.com<br>
+                    <div class="tab-row"><span class="tab-label">2021 - Present</span><span>Hanyang University School of Architecture</span></div>
+                    <div class="tab-row"><span class="tab-label">2023 - 2024</span><span>Republic of Korea Air Force, Mandatory Military Service</span></div>
+                    <div class="tab-row"><span class="tab-label">2018 - 2020</span><span>Gyeongnam Science High School</span></div>
+                </div>
+                <div class="about-col">
+                    SKILLS<br>
                     Rhino<br>
                     Illustrator<br>
-                    AutoCAD
-                    </div>
-                    <div class="about-box">HONORS & AWARDS<br>
-                        <div class="tab-row">
-                            <span class="tab-label">Commendation</span>
-                            <span>2026 Mayor of Jongno-gu, Changsin-dong Emergency Housing</span>
-                        </div>
-                        <div class="tab-row">
-                            <span class="tab-label">Finalist</span>
-                            <span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span>
-                        </div>
-                        <div class="tab-row">
-                            <span class="tab-label">Bronze</span>
-                            <span>17th Korea Science &amp; Engineering Fair (KSEF)</span>
-                        </div>
-                        <div class="tab-row">
-                            <span class="tab-label">Excellence</span>
-                            <span>65th National Science Fair</span>
-                        </div>
-                    </div>
+                    AutoCAD<br>
+                    <br>
+                    HONORS &amp; AWARDS<br>
+                    <div class="tab-row"><span class="tab-label">Finalist</span><span>2025 Fondation Jacques Rougerie - Académie des beaux-arts</span></div>
+                    <div class="tab-row"><span class="tab-label">Bronze</span><span>17th Korea Science &amp; Engineering Fair (KSEF)</span></div>
+                    <div class="tab-row"><span class="tab-label">Excellence</span><span>65th National Science Fair</span></div>
                 </div>
             </div>
         `;
-
-        // 레이아웃 고정은 CSS의 #about-img { aspect-ratio } 가 담당함.
-        // (예전 페이드인 코드는 opacity 초기값 0이 어디에도 없어서 동작하지 않았고, 불필요해서 제거)
     }
 }
 
