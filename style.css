@@ -5,7 +5,9 @@
     --label-col-width: 140px; /* ABOUT 탭 간격: 라벨(연도/상 등급) 칸 너비. 왼쪽·오른쪽 단의 모든 라벨-내용 줄이 이 값 하나를 같이 씀 */
     --page-left: 20px;        /* 사이트 전체 왼쪽 여백 (로고 시작점, ABOUT 왼쪽 단 시작점) */
     --page-right: 20px;       /* 사이트 전체 오른쪽 여백 (메뉴 ABOUT 글자 끝, ABOUT 오른쪽 단 끝) */
-    --ease-inout: cubic-bezier(0.455, 0.03, 0.515, 0.955); /* WORK 페이지 전환 공통 easing (GSAP power1.inOut 근사) */
+    /* WORK 목록 페이드·썸네일 등장 easing = GSAP power1.inOut 정확값(2t², 20구간 샘플). cubic-bezier로는 근사만 가능해서 linear() 사용 */
+    --ease-inout: linear(0, 0.005, 0.02, 0.045, 0.08, 0.125, 0.18, 0.245, 0.32, 0.405, 0.5, 0.595, 0.68, 0.755, 0.82, 0.875, 0.92, 0.955, 0.98, 0.995, 1);
+    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);      /* WORK 배경색 전환 (GSAP quad.out = yooniverse가 실제로 쓰는 곡선: 바로 바뀌고 끝에서 천천히) */
     --about-img-ratio: 3 / 4; /* ABOUT 사진 "슬롯" 비율(가로/세로). 파일 해상도와 무관한 디자인 값. 어떤 사진이 와도 이 틀을 채움 */
 }
 
@@ -196,7 +198,7 @@ body {
     z-index: 0;                  /* 메뉴바(z-index 9999)는 위에 그대로 남음 */
     overflow: hidden;
     background-color: #fff;
-    transition: background-color 1s var(--ease-inout);
+    transition: background-color 1s var(--ease-out);
 }
 
 #work-list {
@@ -238,7 +240,8 @@ body {
     opacity: 0.2;
 }
 
-/* 호버 시 커서를 따라다니는 썸네일: 위치는 JS가 transform으로, 등장은 CSS가 담당 */
+/* 호버 시 커서를 따라다니는 썸네일: 위치는 JS가 .work-thumb의 transform으로,
+   등장(투명도 0→1, 크기 0.4→1)은 JS 애니메이션이 .work-thumb-inner에 (정방향/역재생) */
 .work-thumb {
     position: fixed;
     top: 0;
@@ -246,26 +249,18 @@ body {
     width: 250px;
     z-index: 10;
     pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
     will-change: transform;
-    transition: opacity 0.2s var(--ease-inout), visibility 0s linear 0.2s;
+}
+.work-thumb-inner {
+    opacity: 0;                  /* JS 애니메이션이 붙기 전 기본 상태 = 숨김 */
+    transform: scale(0.4);
 }
 .work-thumb img,
 .work-thumb canvas {
     display: block;
     width: 100%;
     height: auto;
-    transform: scale(0.4);
-    transition: transform 0.2s var(--ease-inout);
 }
-.work-item.is-hover .work-thumb {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s;
-}
-.work-item.is-hover .work-thumb img,
-.work-item.is-hover .work-thumb canvas { transform: scale(1); }
 
 /* 씬1 → 씬2: 목록 페이드아웃 (배경색은 #work-section에 그대로 남음) */
 #work-section.is-out .work-item { opacity: 0; transition-duration: 0.9s; }
