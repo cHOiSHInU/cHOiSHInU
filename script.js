@@ -16,6 +16,7 @@ const workProjects = [
     { title: "Monolith Daechi", year: "2026", image: "thumbs/monolith-daechi.webp", noClick: true },
     { title: "Shaping Shade: A Community Center in Rural Casamance", year: "2026", image: "thumbs/last.webp", full: "last.jpg" },
     { title: "Bloom from the Abyss", year: "2025", image: "thumbs/test.webp", full: "test.jpg" },
+    { title: "Folded Green", year: "2022", image: "thumbs/folded-green.webp", noClick: true },
     { title: "apple", year: "apple", image: "thumbs/IMG_0971.webp", full: "IMG_0971.JPEG" },
     { title: "apple", year: "apple", image: "thumbs/IMG_1228.webp", full: "IMG_1228.JPEG" },
     { title: "apple", year: "apple", image: "thumbs/IMG_1787.webp", full: "IMG_1787.JPEG" },
@@ -283,7 +284,10 @@ function renderWorkList(contentArea, openIndex = null) {
             show();
             setBg(colors[i]);
         });
-        li.addEventListener('mouseleave', hide);
+        li.addEventListener('mouseleave', () => {
+            hide();
+            if (!isOut()) setBg('#fff', false); // 호버를 치우면 하양으로. 옆 줄로 옮기면 곧바로 그 줄 색으로 이어서 바뀜
+        });
         li.addEventListener('touchstart', () => setBg(colors[i]), { passive: true }); // 모바일: 썸네일 없이 배경색만
         if (!p.href && !p.noClick) li.querySelector('.work-link').addEventListener('click', () => openProject(i));
     });
