@@ -1,5 +1,10 @@
 // 대문자 원본 확장자 고정
-const imageList = ["IMG_0971.JPEG", "IMG_1508.JPEG", "IMG_1228.JPEG", "IMG_1787.JPEG", "IMG_0549.JPEG"];
+const imageList = [
+    "IMG_0971.JPEG", "IMG_1508.JPEG", "IMG_1228.JPEG", "IMG_1787.JPEG", "IMG_0549.JPEG",
+    // 홈 사진은 전부 긴 변 2048px로 통일 (넘는 것만 줄이고, 2048 이하는 원본 그대로)
+    "paris-graffiti.jpg", "paris-sacre-coeur.jpg", "paris-fondation-lv.jpg", "paris-arc-de-triomphe.jpg",
+    "paris-villa-savoye.jpg", "paris-ima.jpg", "paris-pompidou.jpg",
+];
 let isFirstLoad = true;
 
 // =========================================================
