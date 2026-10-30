@@ -17,10 +17,7 @@ const workProjects = [
     { title: "Shaping Shade: A Community Center in Rural Casamance", year: "2026", image: "thumbs/last.webp", full: "last.jpg" },
     { title: "Bloom from the Abyss", year: "2025", image: "thumbs/test.webp", full: "test.jpg" },
     { title: "Folded Green", year: "2022", image: "thumbs/folded-green.webp", noClick: true },
-    { title: "apple", year: "apple", image: "thumbs/IMG_0971.webp", full: "IMG_0971.JPEG" },
-    { title: "apple", year: "apple", image: "thumbs/IMG_1228.webp", full: "IMG_1228.JPEG" },
-    { title: "apple", year: "apple", image: "thumbs/IMG_1787.webp", full: "IMG_1787.JPEG" },
-    { title: "apple", year: "apple", image: "thumbs/IMG_1508.webp", full: "IMG_1508.JPEG" },
+    { title: "Sum of Views", year: "2022", image: "thumbs/sum-of-views.webp", noClick: true },
     { title: "A Study on Soil Liquefaction Induced by Earthquakes", year: "2019", image: "thumbs/liquefaction.webp" },
 ];
 

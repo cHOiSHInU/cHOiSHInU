@@ -236,7 +236,8 @@ body {
     position: absolute;          /* 글자 폭에 영향 없이 단어 오른쪽 위에 붙는 연도 */
     margin: 0 4px;
     font-size: 13px;
-    line-height: normal;
+    /* 줄 높이는 제목의 26px을 그대로 물려받음(yooniverse와 동일) → 13px 숫자가 26px 칸 가운데쯤에 놓임.
+       normal로 두면 칸이 15.7px로 줄어 숫자가 맨 위에 붙고, 윗줄의 y·g 같은 꼬리와 닿음 */
     opacity: 0.2;
 }
 
