@@ -1,7 +1,7 @@
 """WORK 페이지 썸네일 변환 도구.
 
-원본 사진(수 MB)을 가로 800px WebP(수십 KB)로 줄여서 thumbs/ 폴더에 저장한다.
-썸네일은 화면에 250px로 보이므로 800px이면 레티나에서도 충분하다.
+원본 사진(수 MB)을 가로 500px WebP(수십 KB)로 줄여서 thumbs/ 폴더에 저장한다.
+썸네일은 화면에 250px로 보이므로 2배인 500px이면 레티나에서도 충분하다.
 (큰 원본을 그대로 쓰면 로딩이 느리고 호버가 버벅인다.)
 
 사용법 (프로젝트 폴더에서):
@@ -14,7 +14,7 @@ import os
 import sys
 from PIL import Image, ImageOps
 
-WIDTH = 800
+WIDTH = 500
 QUALITY = 80
 OUT_DIR = "thumbs"
 

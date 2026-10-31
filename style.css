@@ -65,7 +65,7 @@ a, a:visited {
 }
 
 .logo h1 a {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 800; 
 }
 
@@ -193,12 +193,29 @@ body {
    WORK 페이지 - 텍스트 목록 + 호버 시 이미지/배경색 전환 (스크롤 없음)
    ========================================== */
 #work-section {
-    position: fixed;             /* 메뉴바 뒤까지 화면 전체가 배경색으로 물들도록 */
+    position: fixed;             /* 화면 전체를 덮는 WORK 화면 (페이드아웃도 이 단위로) */
     inset: 0;
     z-index: 0;                  /* 메뉴바(z-index 9999)는 위에 그대로 남음 */
     overflow: hidden;
-    background-color: #fff;
+    background-color: #fff;      /* 배경은 항상 하양. 호버 색은 아래 그라데이션 막에만 */
+    --work-bg: #fff;             /* 호버 색 (script.js setBg가 바꿈) */
+}
+
+/* 목록 앞을 덮는 색 그라데이션 막: 아래쪽 줄이 색 속으로 가려짐 (YOONIVERSE #gradient와 같은 50vh, 20%→80%) */
+#work-section::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50vh;
+    z-index: 2;
+    background-color: var(--work-bg);
     transition: background-color 1s var(--ease-out);
+    -webkit-mask-image: linear-gradient(0deg, #000 20%, transparent 80%);
+    mask-image: linear-gradient(0deg, #000 20%, transparent 80%);
+    pointer-events: none;
+    display: none;               /* 임시로 끔 — 이 줄만 지우면 다시 켜짐 */
 }
 
 #work-list {
@@ -214,13 +231,16 @@ body {
     width: 100%;
     margin-top: -2.5px;
     text-align: center;
-    opacity: 0;
-    transition: opacity 0.6s var(--ease-inout);
 }
-#work-section.is-in .work-item { opacity: 1; }
 
+/* 페이드는 줄(li)이 아니라 글자(링크)에만: li에 opacity를 주면 li가 따로 겹침 단위가 되어
+   그 안의 썸네일 z-index가 갇히고, 뒤 줄 글자가 썸네일 위로 올라옴 */
 .work-link {
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-inout) var(--delay, 0s);
     display: block;
+    width: fit-content;          /* 호버·클릭 영역을 글자 폭으로 (가운데 정렬은 auto 여백) */
+    margin: 0 auto;
     cursor: pointer;             /* 링크 연결 전(href 없음)에도 항상 클릭 커서. 안 주면 글자 위에서 텍스트 커서가 나옴 */
 }
 
@@ -263,8 +283,10 @@ body {
     height: auto;
 }
 
-/* 씬1 → 씬2: 목록 페이드아웃 (배경색은 #work-section에 그대로 남음) */
-#work-section.is-out .work-item { opacity: 0; transition-duration: 0.9s; }
+/* 씬1 → 씬2: 목록·배경색·그라데이션이 한 화면으로 같이 페이드아웃 → 아래의 하양이 드러남 */
+#work-section.is-out { opacity: 0; transition: opacity 0.9s var(--ease-inout); }
+#work-section.is-in .work-link { opacity: 1; }
+#work-section.is-out .work-link { opacity: 0; transition-duration: 0.9s; }
 #work-section.is-out #work-list { pointer-events: none; }
 
 /* 씬2 원본 이미지: 홈의 #random-img와 같은 자리·크기 (위 40px, 높이 70vh, 가로 중앙) */
